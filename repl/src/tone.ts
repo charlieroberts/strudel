@@ -23,6 +23,7 @@ import {
 // https://www.charlie-roberts.com/gibberish/playground/
 
 const Pattern = _Pattern as any;
+export const instruments = <any>[]
 
 // with this function, you can play the pattern with any tone synth
 Pattern.prototype.tone = function (instrument) {
@@ -38,6 +39,9 @@ Pattern.prototype.tone = function (instrument) {
         instrument.triggerAttackRelease(value.value, event.duration, time);
       }
     };
+    instruments.push( instrument );
+    //setTimeout( ()=> { console.log( instrument ); if( instrument._wasDisposed === false ) instrument.dispose() }, event.duration + 5000)
+
     return { ...value, instrument, onTrigger };
   });
 };
@@ -74,6 +78,7 @@ You are entering experimental zone
 // the following code is an attempt to minimize tonejs code.. it is still an experiment
 
 const chainable = function (instr) {
+  console.log( 'chainable' )
   const _chain = instr.chain.bind(instr);
   let chained: any = [];
   instr.chain = (...args) => {
@@ -125,7 +130,6 @@ You are entering danger zone
 */
 
 // everything below is nice in theory, but not healthy for the JS heap, as nodes get recreated on every call
-
 const getTrigger = (getChain: any, value: any) => (time: number, event: any) => {
   const chain = getChain(); // make sure this returns a node that is connected toDestination // time
   if (!isNote(value)) {

@@ -18,7 +18,7 @@ try {
   console.warn('failed to decode', err);
 }
 
-Tone.setContext( new Tone.Context({ latencyHint : .5, lookAhead:1 }))
+Tone.setContext( new Tone.Context({ latencyHint : 'playback', lookAhead:1 }))
 const defaultSynth = new Tone.PolySynth().chain(new Tone.Gain(0.5), Tone.getDestination());
 defaultSynth.set({
   oscillator: { type: 'triangle' },

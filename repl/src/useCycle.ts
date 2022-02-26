@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ToneEventCallback } from 'tone';
 import * as Tone from 'tone';
 import { TimeSpan } from '../../strudel.mjs';
+import { instruments } from './tone.js';
 import type { Hap } from './types';
 
 export declare interface UseCycleProps {
@@ -62,8 +63,10 @@ function useCycle(props: UseCycleProps) {
     Tone.getTransport().start('+0.1');
   };
   const stop = () => {
-    console.log('stop');
     setStarted(false);
+    setTimeout( ()=> {
+      instruments.forEach( i => { if( i._wasDisposed === false ) i.dispose() })
+    }, 2000 )
     Tone.getTransport().pause();
   };
   const toggle = () => (started ? stop() : start());
